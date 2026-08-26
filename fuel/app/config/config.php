@@ -217,9 +217,11 @@ return array(
 		 * ---------------------------------------------------------------------
 		 */
 
-		// 'csrf_autoload'            => false,
-		// 'csrf_autoload_methods'    => array('post', 'put', 'delete'),
-		// 'csrf_bad_request_on_fail' => false,
+		// POST/PUT/DELETE は自動でトークン検証する（フォーム・非同期通信とも対象）
+		'csrf_autoload'            => true,
+		'csrf_autoload_methods'    => array('post', 'put', 'delete'),
+		// 検証失敗時は例外を投げっぱなしにせず 400 を返す
+		'csrf_bad_request_on_fail' => true,
 		// 'csrf_auto_token'          => false,
 		// 'csrf_token_key'           => 'fuel_csrf_token',
 		// 'csrf_expiration'          => 0,
@@ -451,7 +453,7 @@ return array(
 	 * -------------------------------------------------------------------------
 	 */
 
-	// 'always_load' => array(
+	'always_load' => array(
 		/**
 		 * ---------------------------------------------------------------------
 		 *  These packages are loaded on Fuel's startup.
@@ -512,7 +514,8 @@ return array(
 		 * ---------------------------------------------------------------------
 		 */
 
-		// 'config' => array(),
+		// kakeibo.php を config グループ 'kakeibo' として起動時に読み込む
+		'config' => array('kakeibo'),
 
 		/**
 		 * ---------------------------------------------------------------------
@@ -533,5 +536,5 @@ return array(
 		 */
 
 		// 'language' => array(),
-	// ),
+	),
 );

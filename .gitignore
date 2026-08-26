@@ -34,3 +34,6 @@ desktop.ini
 
 # 接続情報を含む設定ファイル（db.php.example をコピーして使う）
 /fuel/app/config/development/db.php
+
+# npm の install 先（package.json から再現できるため追跡しない）
+/node_modules

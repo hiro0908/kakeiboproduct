@@ -18,6 +18,11 @@ require COREPATH.'bootstrap.php';
 	// Example: 'View' => APPPATH.'classes/myview.php',
 ));
 
+\Autoloader::add_namespaces(array(
+	"service"=>APPPATH."classes/service/",
+	"Repository"=>APPPATH."classes/repository"
+));
+
 // Register the autoloader
 \Autoloader::register();
 
