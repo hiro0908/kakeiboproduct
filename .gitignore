@@ -1,0 +1,36 @@
+# temp files from editors
+*~
+*.bak
+.DS_Store
+.buildpath
+.project
+.settings
+*.tmproj
+build
+.idea
+nbproject/
+
+# hidden files created by Windows
+Thumbs.db
+desktop.ini
+
+# composer の install 先。composer.lock は dev ブランチ依存を固定するため意図的にコミットする
+/fuel/vendor
+/composer.phar
+
+# any of the fuel packages installed by default
+/fuel/core/
+/fuel/packages/auth/
+/fuel/packages/email/
+/fuel/packages/oil/
+/fuel/packages/orm/
+/fuel/packages/parser/
+/public/docs/
+
+# dynamically generated files
+/fuel/app/logs/*/*/*
+/fuel/app/cache/*/*
+/fuel/app/config/crypt.php
+
+# 接続情報を含む設定ファイル（db.php.example をコピーして使う）
+/fuel/app/config/development/db.php

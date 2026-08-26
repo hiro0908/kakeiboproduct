@@ -1,0 +1,20 @@
+<?php
+/**
+ * 開発環境のデータベース接続設定のひな形。
+ *
+ * このファイルを db.php にコピーし、username / password を自分の環境の値に変える。
+ * db.php 本体は接続情報を含むためコミットしない。
+ */
+
+return array(
+	'default' => array(
+		'type'       => 'pdo',
+		'connection' => array(
+			'dsn'      => 'mysql:host=localhost;dbname=kakeibo;charset=utf8mb4',
+			'username' => 'kakeibo',
+			'password' => '',
+		),
+		'charset'   => 'utf8mb4',
+		'profiling' => true,
+	),
+);
