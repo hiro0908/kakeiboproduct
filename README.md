@@ -83,6 +83,18 @@ oil                CLI ツール（マイグレーション等）
 | `fuel/app/config/development/db.php.example` | 接続情報のひな形 | する |
 | `fuel/app/config/crypt.php` | 初回起動時に自動生成される暗号化キー | **しない** |
 
+## コードの置き場所
+
+| 種類 | 置き場所 | 命名規則 |
+| --- | --- | --- |
+| Controller | `fuel/app/classes/controller/` | `Controller_◯◯`（プレフィックス方式） |
+| Model（DBの1テーブルに対応） | `fuel/app/classes/model/` | `Model_◯◯` |
+| Service（業務ロジック） | `fuel/app/classes/service/` | `namespace Service;` |
+| Repository（DB問い合わせ） | `fuel/app/classes/repository/` | `namespace Repository;` |
+| View | `fuel/app/views/◯◯/` | コントローラ名のディレクトリに揃える |
+
+Controller・Model は FuelPHP標準のプレフィックス方式、Service・Repository は独自の名前空間（`fuel/app/bootstrap.php` で登録）を使う。DBへのアクセスは `\DB` クラス経由に統一し、Controller から直接呼ばない。
+
 ## ブランチ運用
 
 `feature/*` → `develop` → `main` の順に PR ベースでマージする。機能単位でブランチを切り、単体で動作する状態にしてから PR を出す。
