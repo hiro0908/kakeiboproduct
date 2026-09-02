@@ -25,4 +25,10 @@ class Model_User{
             ->execute();
             return $id;
     }
+    
+    public static function delete($id){
+        return \DB::delete("user")
+            ->where("id","=",$id)
+            ->execute();
+    }
 }

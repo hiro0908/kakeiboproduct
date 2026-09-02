@@ -51,5 +51,6 @@ return array(
 	'home' => 'home/index',
 	"register"=>"register/index",
 	"login"=>"login/index",
-	"logout"=>"login/logout"
+	"logout"=>"login/logout",
+	"account"=>"account/index",
 );
