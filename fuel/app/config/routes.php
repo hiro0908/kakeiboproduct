@@ -53,4 +53,8 @@ return array(
 	"login"=>"login/index",
 	"logout"=>"login/logout",
 	"account"=>"account/index",
+
+	"category"=>"category/index",
+	"category/(:num)/edit"=>"category/edit/$1",
+	"category/(:num)/delete"=>"category/delete/$1",
 );
