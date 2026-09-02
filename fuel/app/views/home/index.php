@@ -1,0 +1,1 @@
+<p>ようこそ、<?=$current_user["username"]?>さん</p>

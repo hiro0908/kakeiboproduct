@@ -27,7 +27,16 @@ return array(
 	 *
 	 */
 
+	"_400_"=>function(){
+		return Response::forge(View::forge("400"),400);
+	},
+	"_403_" => function(){
+		return Response::forge(View::forge("403"),403);
+	},
 	'_404_' => 'welcome/404',
+	"_500_"=>function(){
+		return Response::forge(View::forge("500"),500);
+	},
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -39,4 +48,9 @@ return array(
 	 */
 
 	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
+	'home' => 'home/index',
+	"register"=>"register/index",
+	"login"=>"login/index",
+	"logout"=>"login/logout",
+	"account"=>"account/index",
 );
