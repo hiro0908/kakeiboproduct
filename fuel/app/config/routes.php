@@ -57,4 +57,8 @@ return array(
 	"category"=>"category/index",
 	"category/(:num)/edit"=>"category/edit/$1",
 	"category/(:num)/delete"=>"category/delete/$1",
+	"expense"=>"expense/index",
+	"expense/new"=>"expense/new",
+	"expense/(:num)/edit"=>"expense/edit/$1",
+	"expense/(:num)/delete"=>"expense/delete/$1",
 );
