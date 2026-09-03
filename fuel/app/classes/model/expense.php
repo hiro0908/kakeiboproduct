@@ -2,7 +2,7 @@
 
 class Model_Expense{
     public static function all_by_user($user_id){
-        return \DB::select("expense.id","expense.title","expense.amount","expense.expense_date","expense.memo","category.name as category_name")
+        return \DB::select("expense.id","expense.title","expense.amount","expense.expense_date","expense.memo",array("category.name","category_name"))
             ->from("expense")
             ->join("category")
             ->on("category.id","=","expense.category_id")
