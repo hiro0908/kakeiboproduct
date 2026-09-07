@@ -1,28 +1,82 @@
 <h1>支出一覧</h1>
-<a href="<?=Uri::create("expense/new")?>">新規登録</a>
-<table>
-    <tr>
-        <th>日付</th>
-        <th>タイトル</th>
-        <th>カテゴリ</th>
-        <th>金額</th>
-        <th>メモ</th>
-        <th></th>
-    </tr>
-    <?php foreach ($expenses as $e):?>
+<div id="app">
+    <p>合計：<span data-bind="text:total">円</span></p>
+    <h2>新規登録</h2>
+    <ul data-bind="foreach:errors">
+        <li data-bind="text:$data"></li>    
+    </ul>
+        
+    <label>タイトル
+        <input type="text" data-bind="value:newTitle">
+    </label>
+    <label>金額
+        <input type="number" data-bind="value:newAmount">
+    </label>
+    <button type="button" data-bind="click: function(){ addQuickAmount(100) }">+100円</button>
+    <button type="button" data-bind="click: function(){ addQuickAmount(500) }">+500円</button>
+    <button type="button" data-bind="click: function(){ addQuickAmount(1000) }">+1000円</button>
+    <button type="button" data-bind="click: function(){ addQuickAmount(5000) }">+5000円</button>
+    <button type="button" data-bind="click: function(){ addQuickAmount(10000) }">+10000円</button>
+
+    <label>カテゴリ
+        <select data-bind="value:newCategoryId">
+            <?php foreach($categories as $c):?>
+                <option value="<?= $c["id"]?>"><?= $c["name"]?></option>
+            <?php endforeach;?>
+        </select>
+    </label>
+    <label>支出日
+        <input type="date" data-bind="value:newExpenseDate">
+    </label>
+    <label>メモ
+        <textarea data-bind="value:newMemo"></textarea>
+    </label>
+
+    <button type="button" data-bind="click:createExpense">登録</button>
+    <h2></h2>
+
+    <table>
         <tr>
-            <td><?= $e["expense_date"]?></td>
-            <td><?= $e["title"]?></td>
-            <td><?= $e["category_name"]?></td>
-            <td><?= $e["amount"]?></td>
-            <td><?= $e["memo"]?></td>
+            <th>日付</th>
+            <th>タイトル</th>
+            <th>カテゴリ</th>
+            <th>金額</th>
+            <th>メモ</th>
+            <th></th>
+        </tr>
+        <!-- ko foreach:expenses-->
+        <tr data-bind="visible:!isEditing()">
+            <td data-bind="text:expense_date"></td>
+            <td data-bind="text:title"></td>
+            <td data-bind="text:category_name"></td>
+            <td data-bind="text:amount"></td>
+            <td data-bind="text:memo"></td>
             <td>
-                <a href="<?=Uri::create("expense/{$e["id"]}/edit")?>">編集</a>
-                <form method="post" action="<?=uri::create("expense/{$e["id"]}/delete")?>">
-                    <input type="hidden" name="<?=\Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
-                    <button type="submit">削除</button>
-                </form>
+                <button type="button" data-bind="click:$parent.startEdit">編集</button>
+                <button type="button" data-bind="click:$parent.deleteExpense">削除</button>
             </td>
         </tr>
-    <?php endforeach;?>
-</table>
+        <tr data-bind="visible:isEditing">
+            <td><input type="date" data-bind="value:expense_date"></td>
+            <td><input type="text" data-bind="value:title"></td>
+            <td><input type="number" data-bind="value:category_id"></td>
+            <td><input type="number" data-bind="value:amount"></td>
+            <td><input type="text" data-bind="value:memo"></td>
+            <td>
+                <button type="button" data-bind="click:$parent.saveEdit">保存</button>
+                <button type="button" data-bind="click:$parent.cancelEdit">キャンセル</button>
+            </td>
+        </tr>
+        <!--/ko-->
+    </table>
+</div>
+<script src="/assets/js/vendor/knockout-3.5.3.js"></script>
+<script src="/assets/js/expense.js"></script>
+<script>
+    var vm=new ExpenseViewModel(
+        <?=json_encode($expenses)?>,
+        <?=json_encode(\Config::get("security.csrf_token_key"))?>,
+        <?=json_encode(\Security::fetch_token())?>
+    );
+    ko.applyBindings(vm,document.getElementById("app"));
+</script>
