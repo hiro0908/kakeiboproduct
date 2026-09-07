@@ -4,7 +4,8 @@ class Controller_Expense extends Controller_Base{
     public function action_index(){
         $this->template->title="支出一覧";
         $this->template->content=\View::forge("expense/index",array(
-            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"])
+            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"]),
+            "categories"=>\Model_Category::all_by_user($this->current_user["id"])
         ));
     }
 
@@ -36,7 +37,7 @@ class Controller_Expense extends Controller_Base{
             if (\Input::is_ajax()){
                 return $this->json(array(
                     "success"=>false,
-                    "errors"=>$val->error_message()
+                    "errors"=>array_values($val->error_message())
                     ));
             }
             $this->template->title="支出の新規登録";
@@ -58,7 +59,7 @@ class Controller_Expense extends Controller_Base{
             ));
             return;
         }
-        \Model_Expense::create(
+        $id=\Model_Expense::create(
             $this->current_user["id"],
             $category_id,
             \Input::post("title"),
@@ -107,7 +108,7 @@ class Controller_Expense extends Controller_Base{
             $this->template->content=\View::forge("expense/edit",array(
                 "expense"=>$expense,
                 "categories"=>$categories,
-                "errors"=>$val->error_message(),
+                "errors"=>array_values($val->error_message()),
             ));
             return;
         }
