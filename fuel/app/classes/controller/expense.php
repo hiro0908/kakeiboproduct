@@ -2,10 +2,36 @@
 
 class Controller_Expense extends Controller_Base{
     public function action_index(){
+        $allowed_sort=array(
+            "date"   => "expense_date",
+            "amount" => "amount",
+            "title"  => "title",
+        );
+
+        $allowed_dir=array("asc","desc");
+        $year        = \Input::get("year")?:(int)date("Y");
+        $month       = \Input::get("month")?:(int)date("n");
+        $category_id = \Input::get("category_id"?:null);
+        $sort_key    = \Input::get("sort","date");
+        $dir         = \Input::get("dir","desc");
+        $sort_column = array_key_exists($sort_key,$allowed_sort)?$allowed_sort[$sort_key]:"expense_date";
+        $sort_dir    = in_array($dir,$allowed_dir,true)?$dir:"desc";
         $this->template->title="支出一覧";
         $this->template->content=\View::forge("expense/index",array(
-            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"]),
-            "categories"=>\Model_Category::all_by_user($this->current_user["id"])
+            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"],array(
+                "year"        => $year,
+                "month"       => $month,
+                "category_id" => $category_id,
+                "sort_by"     => $sort_column,
+                "sort_dir"    => $sort_dir,
+            )),
+            "categories"=>\Model_Category::all_by_user($this->current_user["id"]),
+            "category_totals"=>\Model_Expense::total_by_category($this->current_user["id"],$year,$month),
+            "filter_year"=>$year,
+            "filter_month"=>$month,
+            "filter_category_id"=>$category_id,
+            "sort_key"=>$sort_key,
+            "sort_dir"=>$sort_dir,
         ));
     }
 
