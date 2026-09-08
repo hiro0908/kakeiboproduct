@@ -61,5 +61,6 @@ return array(
 	"expense/new"=>"expense/new",
 	"expense/(:num)/edit"=>"expense/edit/$1",
 	"expense/(:num)/delete"=>"expense/delete/$1",
-	"budget"=>"budget/index"
+	"budget"=>"budget/index",
+	"settings"=>"settings/index",
 );
