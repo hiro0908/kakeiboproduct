@@ -2,10 +2,41 @@
 
 class Controller_Expense extends Controller_Base{
     public function action_index(){
+        $allowed_sort=array(
+            "date"   => "expense_date",
+            "amount" => "amount",
+            "title"  => "title",
+        );
+
+        $allowed_dir=array("asc","desc");
+        $year        = \Input::get("year")?:(int)date("Y");
+        $month       = \Input::get("month")?:(int)date("n");
+        $category_id = \Input::get("category_id"?:null);
+        $sort_key    = \Input::get("sort","date");
+        $dir         = \Input::get("dir","desc");
+        $sort_column = array_key_exists($sort_key,$allowed_sort)?$allowed_sort[$sort_key]:"expense_date";
+        $sort_dir    = in_array($dir,$allowed_dir,true)?$dir:"desc";
         $this->template->title="支出一覧";
         $this->template->content=\View::forge("expense/index",array(
-            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"])
+            "expenses"=>\Model_Expense::all_by_user($this->current_user["id"],array(
+                "year"        => $year,
+                "month"       => $month,
+                "category_id" => $category_id,
+                "sort_by"     => $sort_column,
+                "sort_dir"    => $sort_dir,
+            )),
+            "categories"=>\Model_Category::all_by_user($this->current_user["id"]),
+            "category_totals"=>\Model_Expense::total_by_category($this->current_user["id"],$year,$month),
+            "filter_year"=>$year,
+            "filter_month"=>$month,
+            "filter_category_id"=>$category_id,
+            "sort_key"=>$sort_key,
+            "sort_dir"=>$sort_dir,
         ));
+    }
+
+    protected function json($date,$status=200){
+        return \Response::forge(json_encode($date),$status,array("Content-Type"=>"application/json"));
     }
 
     public function action_new(){
@@ -29,6 +60,12 @@ class Controller_Expense extends Controller_Base{
         $val->add_field("memo","メモ","max_length[255]");
 
         if (!$val->run()){
+            if (\Input::is_ajax()){
+                return $this->json(array(
+                    "success"=>false,
+                    "errors"=>array_values($val->error_message())
+                    ));
+            }
             $this->template->title="支出の新規登録";
             $this->template->content=\View::forge("expense/new",array(
                 "categories"=>$categories,
@@ -38,8 +75,9 @@ class Controller_Expense extends Controller_Base{
         }
 
         $category_id=\Input::post("category_id");
+        $category=\Model_Category::find($category_id,$this->current_user["id"]);
 
-        if (\Model_Category::find($category_id,$this->current_user["id"])===null){
+        if ($category===null){
             $this->template->title="支出の新規登録";
             $this->template->content=\View::forge("expense/new",array(
                 "categories"=>$categories,
@@ -47,7 +85,7 @@ class Controller_Expense extends Controller_Base{
             ));
             return;
         }
-        \Model_Expense::create(
+        $id=\Model_Expense::create(
             $this->current_user["id"],
             $category_id,
             \Input::post("title"),
@@ -55,6 +93,12 @@ class Controller_Expense extends Controller_Base{
             \Input::post("expense_date"),
             \Input::post("memo")?:null
         );
+
+        if(\Input::is_ajax()){
+            $expense=\Model_Expense::find($id,$this->current_user["id"]);
+            $expense["category_name"]=$category["name"];
+            return $this->json(array("success"=>true,"expense"=>$expense));
+        }
         \Response::redirect("expense");
     }
 
@@ -90,14 +134,18 @@ class Controller_Expense extends Controller_Base{
             $this->template->content=\View::forge("expense/edit",array(
                 "expense"=>$expense,
                 "categories"=>$categories,
-                "errors"=>$val->error_message(),
+                "errors"=>array_values($val->error_message()),
             ));
             return;
         }
 
         $category_id=\Input::post("category_id");
+        $category=\Model_Category::find($category_id,$this->current_user["id"]);
 
-        if(\Model_Category::find($category_id,$this->current_user["id"])===null){
+        if($category===null){
+            if(\Input::is_ajax()){
+                return $this->json(array("success"=>false,"errors"=>array("選択したカテゴリーが不正です")));
+            }
             $this->template->title="支出の編集";
             $this->template->content=\View::forge("expense/edit",array(
                 "expense"=>$expense,
@@ -116,6 +164,12 @@ class Controller_Expense extends Controller_Base{
             \Input::post("memo")?:null
         );
 
+        if (\Input::is_ajax()){
+            $updated=Model_Expense::find($id,$this->current_user["id"]);
+            $updated["category_name"]=$category["name"];
+            return $this->json(array("success"=>true,"expense"=>$updated));
+        }
+
         \Response::redirect("expense");
     }
         public function action_delete($id){
@@ -124,6 +178,9 @@ class Controller_Expense extends Controller_Base{
             }
 
             \Model_Expense::delete($id,$this->current_user["id"]);
+            if (\Input::is_ajax()){
+                return $this->json(array("success"=>true));
+            }
             \Response::redirect("expense");
         }
 }
