@@ -1,4 +1,34 @@
 <h1>支出一覧</h1>
+<form method="get" action="<?=Uri::create("expense")?>">
+    <label>
+        <input type="number" name="year" value="<?=$filter_year ?>">
+    </label>
+    <label>
+        <input type="number" name="month" value="<?=$filter_month?>">
+    </label>
+    <label>
+        <select name="category_id">
+            <option value="">すべて</option>
+            <?php foreach($categories as $c):?>
+                <option value="<?=$c["id"]?>"<?=$c["id"]==$filter_category_id?"selected":""?>><?=$c["name"]?></option>
+            <?php endforeach;?>
+        </select>
+    </label>
+    <button type="submit">絞り込む</button>
+</form>
+<h2>カテゴリ別集計</h2>
+<ul>
+    <?php foreach($category_totals as $ct):?>
+        <li><?=$ct["name"]?>:<?=number_format($ct["total"])?>円</li>
+    <?php endforeach;?>
+</ul>
+<p>
+    並び替え:
+    <a href="<?=\Uri::create("expense",array(),array("year"=>$filter_year,"month"=>$filter_month,"category_id"=>$filter_category_id,"sort"=>"date","dir"=>($sort_key=="date" and $sort_dir=="asc")?"desc":"asc"))?>">日付</a>
+    /
+    <a href="<?=\Uri::create("expense",array(),array("year"=>$filter_year,"month"=>$filter_month,"category_id"=>$filter_category_id,"sort"=>"amount","dir"=>($sort_key=="amount" and $sort_dir=="asc")?"desc":"asc"))?>">金額</a>
+    
+</p>
 <div id="app">
     <p>合計：<span data-bind="text:total">円</span></p>
     <h2>新規登録</h2>

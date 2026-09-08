@@ -1,13 +1,27 @@
 <?php
 
 class Model_Expense{
-    public static function all_by_user($user_id){
-        return \DB::select("expense.id","expense.title","expense.amount","expense.expense_date","expense.memo",array("category.name","category_name"))
+    public static function all_by_user($user_id,$filters=array()){
+        $query= \DB::select("expense.id","expense.title","expense.amount","expense.expense_date","expense.memo","expense.category_id",array("category.name","category_name"))
             ->from("expense")
             ->join("category")
             ->on("category.id","=","expense.category_id")
-            ->where("expense.user_id","=",$user_id)
-            ->order_by("expense.expense_date","desc")
+            ->where("expense.user_id","=",$user_id);
+        if (!empty($filters["year"]) and !empty($filters["month"])){
+            $start  = sprintf("%04d-%02d-01",$filters["year"],$filters["month"]);
+            $end    = date("Y-m-t",strtotime($start));
+            $query  ->where("expense.expense_date",">=",$start)
+                    ->where("expense.expense_date","<=",$end);
+        }
+
+        if (!empty($filters["category_id"])){
+            $query->where("expense.category_id","=",$filters["category_id"]);
+        }
+
+        $sort_by  = !empty($filters["sort_by"])?$filters["sort_by"]:"expense_date";
+        $sort_dir = !empty($filters["sort_dir"])?$filters["sort_dir"]:"desc";
+
+        return $query->order_by("expense." . $sort_by,$sort_dir)
             ->execute()
             ->as_array();
     }
@@ -70,5 +84,21 @@ class Model_Expense{
             ->execute()
             ->get("total");
         return (int) $result;
+    }
+
+    public static function total_by_category($user_id,$year,$month){
+        $start=sprintf("%04d-%02d-01",$year,$month);
+        $end = date("Y-m-t",strtotime($start));
+
+        return \DB::select("category.name",array(\DB::expr("SUM(expense.amount)"),"total"))
+            ->from("expense")
+            ->join("category")
+            ->on("category.id","=","expense.category_id")
+            ->where("expense.user_id","=",$user_id)
+            ->where("expense.expense_date",">=",$start)
+            ->where("expense.expense_date","<=",$end)
+            ->group_by("category.id")
+            ->execute()
+            ->as_array();
     }
 }
