@@ -58,4 +58,17 @@ class Model_Expense{
         ->where("user_id","=",$user_id)
         ->execute();
     }
+
+    public static function total_by_month($user_id,$year,$month){
+        $start=sprintf("%04d-%02d-01",$year,$month);
+        $end=date("Y-m-t",strtotime($start));
+        $result=\DB::select(array(\DB::expr("SUM(amount)"),"total"))
+            ->from("expense")
+            ->where("user_id","=",$user_id)
+            ->where("expense_date",">=",$start)
+            ->where("expense_date","<=",$end)
+            ->execute()
+            ->get("total");
+        return (int) $result;
+    }
 }
