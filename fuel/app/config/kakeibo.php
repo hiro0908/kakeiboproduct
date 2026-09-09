@@ -3,7 +3,7 @@ return [
 "quick_amounts"=>[100,500,1000,5000,10000],
 "max_expense_amount"=>1000000,
 "budget_alert_threshold"=>80,
-"list_per_page"=>20,
+"list_per_page"=>10,
 "default_category"=>[
     "食費",
     "交通費",
