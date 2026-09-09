@@ -18,6 +18,10 @@ class Model_Expense{
             $query->where("expense.category_id","=",$filters["category_id"]);
         }
 
+        if (!empty($filters["limit"])){
+            $query->limit((int) $filters["limit"]);
+        }
+
         $sort_by  = !empty($filters["sort_by"])?$filters["sort_by"]:"expense_date";
         $sort_dir = !empty($filters["sort_dir"])?$filters["sort_dir"]:"desc";
 

@@ -1,6 +1,13 @@
 <h1>支出一覧</h1>
 <form method="get" action="<?=Uri::create("expense")?>">
     <label>
+        <select name="per_page" onchange="this.form.submit()">
+            <?php foreach(array(10,50,100)as $n):?>
+                <option value="<?=$n?>" <?=$n==$filter_per_page?"selected":""?>><?=$n?>件</option>
+            <?php endforeach;?>
+        </select>
+    </label>
+    <label>
         <input type="number" name="year" value="<?=$filter_year ?>">
     </label>
     <label>

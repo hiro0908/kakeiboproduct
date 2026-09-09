@@ -26,9 +26,14 @@
  *
  */
 
+$fuel_env=getenv("FUEL_ENV")?:"development";
 error_reporting(-1);
 
-ini_set('display_errors', 1);
+if ($fuel_env==="production"){
+	ini_set('display_errors', 0);
+}else{
+	ini_set("display_errors", 1);
+}
 
 /**
  * -----------------------------------------------------------------------------
