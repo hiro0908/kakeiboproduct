@@ -14,16 +14,15 @@ class Model_User{
     }
 
     public static function create($username,$password){
-        list($id,)=\DB::insert("user")
-            ->Set(array(
-                "username"=>$username,
-                "password"=>password_hash("$password",PASSWORD_DEFAULT),
-                "created_at"=>\Date::forge()->format("mysql"),
-                "updated_at"=>\Date::forge()->format("mysql")
-            ))
-
-            ->execute();
-            return $id;
+        list($id,) = \DB::insert("user")
+        ->set(array(
+            "username"   => $username,
+            "password"   => password_hash("$password",PASSWORD_DEFAULT),
+            "created_at" => \Date::forge()->format("mysql"),
+            "updated_at" => \Date::forge()->format("mysql")
+        ))
+        ->execute();
+        return $id;
     }
     
     public static function delete($id){

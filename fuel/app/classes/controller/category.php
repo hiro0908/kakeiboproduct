@@ -1,17 +1,21 @@
 <?php
 
 class Controller_Category extends Controller_Base{
-    public function action_index(){
-        if (\Input ::method() ==="POST"){
-            return $this->handle_create();
+    protected function find_category_or_404($id){
+        $category=\Model_Category::find($id,$this->current_user["id"]);
+        if ($category===null){
+            throw new \HttpNotFoundException();
         }
+        return $category;
+    }
+    public function get_index(){
         $this->template->title="カテゴリ管理";
         $this->template->content=\View::forge("category/index",array(
             "categories"=>\Model_Category::all_by_user($this->current_user["id"]),
         ));
     }
 
-    protected function handle_create(){
+    public function post_index(){
         $val = Validation::forge();
         $val->add_field("name","カテゴリ名","required|max_length[50]");
         $categories=\Model_Category::all_by_user($this->current_user["id"]);
@@ -39,23 +43,15 @@ class Controller_Category extends Controller_Base{
         \Response::redirect("category");
     }
 
-    public function action_edit($id){
-        $category=\Model_Category::find($id,$this->current_user["id"]);
-
-        if ($category===null){
-            throw new \HttpNotFoundException();
-        }
-
-        if (\Input::method()==="POST"){
-            return $this->handle_update($id,$category);
-        }
-
-        $this->template->title="カテゴリ編集";
-        $this->template->content=View::forge("category/edit",array(
-            "category"=>$category,
+    public function get_edit($id){
+        $category = $this -> find_category_or_404($id);
+        $this -> template -> title   = "カテゴリ編集";
+        $this -> template -> content = View::forge("category/edit",array(
+            "category" => $category,
         ));
     }
-    protected function handle_update($id,$category){
+    public function post_edit($id){
+        $category=$this ->find_category_or_404($id);
         $val = \Validation::forge();
         $val->add_field("name","カテゴリ名","required|max_length[50]");
         if (!$val->run()){
@@ -81,10 +77,7 @@ class Controller_Category extends Controller_Base{
         \Response::redirect("category");
 
     }
-    public function action_delete($id){
-        if(\Input::method()!="POST"){
-            throw new \HttpNotFoundException();
-        }
+    public function post_delete($id){
         $ok=\Service\Category::delete($id,$this->current_user["id"]);
 
         if (!$ok){

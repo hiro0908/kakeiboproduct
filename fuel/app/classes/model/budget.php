@@ -13,7 +13,7 @@ class Model_Budget{
 
     public static function set($user_id,$year,$month,$amount){
         $existing=static::find_by_month($user_id,$year,$month);
-        if($existing==null){
+        if($existing === null){
             list($id,)=\DB::insert("budget")
                 ->set(array(
                     "user_id"=>$user_id,
@@ -35,5 +35,10 @@ class Model_Budget{
             ->where("id","=",$existing["id"])
             ->execute();
         return $existing["id"];
+    }
+    public static function delete_by_user($user_id){
+        return \DB::delete("budget")
+            -> where("user_id","=",$user_id)
+            -> execute();
     }
 }
