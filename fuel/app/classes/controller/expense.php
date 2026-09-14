@@ -16,6 +16,11 @@ class Controller_Expense extends Controller_Base{
         $dir         = \Input::get("dir","desc");
         $sort_column = array_key_exists($sort_key,$allowed_sort)?$allowed_sort[$sort_key]:"expense_date";
         $sort_dir    = in_array($dir,$allowed_dir,true)?$dir:"desc";
+        $allowed_per_page=array(10,50,100);
+        $per_page= (int) \Input::get("per_page",\Config::get("kakeibo.list_per_page",10));
+        if(!in_array($per_page,$allowed_per_page,true)){
+            $per_page=\Config::get("kakeibo.list_per_page",10);
+        }
         $this->template->title="支出一覧";
         $this->template->content=\View::forge("expense/index",array(
             "expenses"=>\Model_Expense::all_by_user($this->current_user["id"],array(
@@ -24,15 +29,19 @@ class Controller_Expense extends Controller_Base{
                 "category_id" => $category_id,
                 "sort_by"     => $sort_column,
                 "sort_dir"    => $sort_dir,
+                "limit"       => $per_page,
             )),
             "categories"=>\Model_Category::all_by_user($this->current_user["id"]),
             "category_totals"=>\Model_Expense::total_by_category($this->current_user["id"],$year,$month),
-            "filter_year"=>$year,
-            "filter_month"=>$month,
-            "filter_category_id"=>$category_id,
-            "sort_key"=>$sort_key,
-            "sort_dir"=>$sort_dir,
+            "filter_year"        => $year,
+            "filter_month"       => $month,
+            "filter_category_id" => $category_id,
+            "sort_key"           => $sort_key,
+            "sort_dir"           => $sort_dir,
+            "filter_per_page"    => $per_page,
         ));
+
+
     }
 
     protected function json($date,$status=200){

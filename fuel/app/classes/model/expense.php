@@ -18,6 +18,10 @@ class Model_Expense{
             $query->where("expense.category_id","=",$filters["category_id"]);
         }
 
+        if (!empty($filters["limit"])){
+            $query->limit((int) $filters["limit"]);
+        }
+
         $sort_by  = !empty($filters["sort_by"])?$filters["sort_by"]:"expense_date";
         $sort_dir = !empty($filters["sort_dir"])?$filters["sort_dir"]:"desc";
 
@@ -100,5 +104,21 @@ class Model_Expense{
             ->group_by("category.id")
             ->execute()
             ->as_array();
+    }
+
+    public static function monthly_totals($user_id,$months=6){
+        $result=array();
+        $now=new \Datetime();
+        for($i=$months-1;$i>=0;$i--){
+            $date=clone $now;
+            $date->modify("-{$i} months");
+            $year=(int) $date->format("Y");
+            $month=(int) $date->format("n");
+            $result[]=array(
+                "label"=>$date->format("Y/m"),
+                "total"=>static::total_by_month($user_id,$year,$month),
+            );
+        }
+        return $result;
     }
 }

@@ -64,6 +64,16 @@ WSL2 では MySQL が自動起動しないため、起動前に以下が必要�
 sudo service mysql start
 ```
 
+### 6. 本番相当での起動（任意）
+
+`FUEL_ENV` を指定すると、PHPのエラー詳細を画面に表示しないモードで起動できる。
+
+```bash
+FUEL_ENV=production php -S localhost:8080 -t public
+```
+
+未指定時は `development` として動作し、従来通りエラー詳細が表示される（開発時はこちらを使う）。
+
 ## ディレクトリ構成
 
 ```
@@ -82,6 +92,81 @@ oil                CLI ツール（マイグレーション等）
 | `fuel/app/config/development/db.php` | DB 接続情報 | **しない** |
 | `fuel/app/config/development/db.php.example` | 接続情報のひな形 | する |
 | `fuel/app/config/crypt.php` | 初回起動時に自動生成される暗号化キー | **しない** |
+
+### アプリ独自の設定（kakeibo.php）
+
+`fuel/app/config/kakeibo.php` に、このアプリ固有の設定値をまとめている。`\Config::get('kakeibo.キー名')` で参照する。
+
+| キー | 内容 | 初期値 |
+| --- | --- | --- |
+| `quick_amounts` | 支出登録フォームのクイック金額ボタン | `[100, 500, 1000, 5000, 10000]` |
+| `max_expense_amount` | 支出1件あたりの金額の上限 | `1000000` |
+| `budget_alert_threshold` | 支出上限に対する使用率がこの値(%)を超えたら警告表示 | `80` |
+| `list_per_page` | 支出一覧の表示件数（10/50/100から選択） | `10` |
+| `default_category` | 新規登録時に自動作成される初期カテゴリ | `食費` `交通費` `娯楽費` `日用品` `その他` |
+| `default_theme` | Cookie未設定時の表示テーマ | `light` |
+| `theme_cookie_name` | テーマを保存するCookie名 | `kakeibo_theme` |
+| `theme_cookie_expiry` | テーマCookieの保持期間（秒） | `31536000`（1年） |
+
+## データベース設計
+
+```mermaid
+erDiagram
+    user ||--o{ category : "所有する"
+    user ||--o{ expense : "登録する"
+    user ||--o{ budget : "設定する"
+    category ||--o{ expense : "分類する"
+
+    user {
+        int id PK
+        varchar username UK
+        varchar password
+        datetime created_at
+        datetime updated_at
+    }
+    category {
+        int id PK
+        int user_id FK
+        varchar name
+        datetime created_at
+        datetime updated_at
+    }
+    expense {
+        int id PK
+        int user_id FK
+        int category_id FK
+        varchar title
+        int amount
+        date expense_date
+        varchar memo
+        datetime created_at
+        datetime updated_at
+    }
+    budget {
+        int id PK
+        int user_id FK
+        int year
+        int month
+        int amount
+        datetime created_at
+        datetime updated_at
+    }
+```
+
+`user` が起点の1:n関係（1人のユーザーが複数のカテゴリ・支出・目標を持つ）と、`category`→`expense` の1:n関係（1つのカテゴリに複数の支出が紐づく）で構成する。カテゴリ名を `expense` に直接持たせず `category_id` で参照することで、カテゴリ名を変更したときに支出データ側を書き換える必要がない（正規化）。
+
+## 画面一覧
+
+| 画面 | URL | 認証 | 機能 |
+| --- | --- | --- | --- |
+| ログイン | `/login` | 不要 | ログイン・ログアウト |
+| 新規登録 | `/register` | 不要 | アカウント作成、初期カテゴリ自動作成 |
+| ホーム | `/home` | 必要 | 今月の支出合計・上限比較・使用率・警告表示 |
+| 支出一覧 | `/expense` | 必要 | 一覧・新規登録・編集・削除（非同期）、月/カテゴリ絞り込み、ソート、件数切替、カテゴリ別集計 |
+| カテゴリ管理 | `/category` | 必要 | 一覧・新規登録・編集・削除 |
+| 支出目標 | `/budget` | 必要 | 月ごとの上限設定・変更 |
+| 設定 | `/settings` | 必要 | テーマ切替、退会への導線 |
+| アカウント削除 | `/account` | 必要 | 退会（確認後、関連データを一括削除） |
 
 ## コードの置き場所
 

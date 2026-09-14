@@ -1,5 +1,13 @@
 <h1>支出一覧</h1>
+<p><a href="<?=\Uri::create("expense/new")?>">新規追加</a></p>
 <form method="get" action="<?=Uri::create("expense")?>">
+    <label>
+        <select name="per_page" onchange="this.form.submit()">
+            <?php foreach(array(10,50,100)as $n):?>
+                <option value="<?=$n?>" <?=$n==$filter_per_page?"selected":""?>><?=$n?>件</option>
+            <?php endforeach;?>
+        </select>
+    </label>
     <label>
         <input type="number" name="year" value="<?=$filter_year ?>">
     </label>
@@ -16,7 +24,6 @@
     </label>
     <button type="submit">絞り込む</button>
 </form>
-<h2>カテゴリ別集計</h2>
 <ul>
     <?php foreach($category_totals as $ct):?>
         <li><?=$ct["name"]?>:<?=number_format($ct["total"])?>円</li>
@@ -30,41 +37,6 @@
     
 </p>
 <div id="app">
-    <p>合計：<span data-bind="text:total">円</span></p>
-    <h2>新規登録</h2>
-    <ul data-bind="foreach:errors">
-        <li data-bind="text:$data"></li>    
-    </ul>
-        
-    <label>タイトル
-        <input type="text" data-bind="value:newTitle">
-    </label>
-    <label>金額
-        <input type="number" data-bind="value:newAmount">
-    </label>
-    <button type="button" data-bind="click: function(){ addQuickAmount(100) }">+100円</button>
-    <button type="button" data-bind="click: function(){ addQuickAmount(500) }">+500円</button>
-    <button type="button" data-bind="click: function(){ addQuickAmount(1000) }">+1000円</button>
-    <button type="button" data-bind="click: function(){ addQuickAmount(5000) }">+5000円</button>
-    <button type="button" data-bind="click: function(){ addQuickAmount(10000) }">+10000円</button>
-
-    <label>カテゴリ
-        <select data-bind="value:newCategoryId">
-            <?php foreach($categories as $c):?>
-                <option value="<?= $c["id"]?>"><?= $c["name"]?></option>
-            <?php endforeach;?>
-        </select>
-    </label>
-    <label>支出日
-        <input type="date" data-bind="value:newExpenseDate">
-    </label>
-    <label>メモ
-        <textarea data-bind="value:newMemo"></textarea>
-    </label>
-
-    <button type="button" data-bind="click:createExpense">登録</button>
-    <h2></h2>
-
     <table>
         <tr>
             <th>日付</th>
