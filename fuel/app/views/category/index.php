@@ -1,12 +1,12 @@
 <h1>カテゴリ設定</h1>
 <?php if ($msg=\Session::get_flash("error")):?>
-    <p><?=$msg?></p>
+    <p><?=e($msg)?></p>
 <?php endif;?>
 
 <?php if(!empty($errors)):?>
     <ul>
         <?php foreach($errors as $e):?>
-            <li><?=$e?></li>
+            <li><?=e($e)?></li>
         <?php endforeach;?>
     </ul>
 <?php endif;?>
@@ -23,7 +23,7 @@
 <ul>
     <?php foreach ($categories as $c):?>
         <li>
-            <?=$c["name"]?>
+            <?=e($c["name"])?>
             <a href="<?=\Uri::create("category/{$c["id"]}/edit")?>">編集</a>
             <form method="post" action="<?=\Uri::create("category/{$c["id"]}/delete")?>" style="display:inline">
                 <input type="hidden" name="<?= Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
