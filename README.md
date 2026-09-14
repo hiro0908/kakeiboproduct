@@ -52,21 +52,13 @@ cp fuel/app/config/development/db.php.example fuel/app/config/development/db.php
 
 コピーした `db.php` の `username` と `password` を自分の環境の値に書き換える。このファイルは接続情報を含むため `.gitignore` の対象で、リポジトリには入らない。
 
-### 4. マイグレーションの実行（初回のみ）
+### 4. 書き込み権限の付与
 
 ```bash
-php oil refine migrate
+chmod -R 777 fuel/app/logs fuel/app/cache fuel/app/tmp
 ```
 
-`user` `budget` `expense` `category` テーブルが作成される。`fuel/app/config/development/migrations.php` の適用状況はコミットされているが、実体はDBごとに異なる（`db.php` と違い `.gitignore` 対象外）ため、他人の環境で一度実行済みになっていても、まっさらな自分のDBに対しては必ずこのコマンドを実行すること。
-
-### 5. 書き込み権限の付与
-
-```bash
-chmod -R 755 fuel/app/logs fuel/app/cache fuel/app/tmp
-```
-
-### 6. 起動
+### 5. 起動
 
 ```bash
 php -S localhost:8080 -t public
@@ -80,7 +72,7 @@ WSL2 では MySQL が自動起動しないため、起動前に以下が必要�
 sudo service mysql start
 ```
 
-### 7. 本番相当での起動（任意）
+### 6. 本番相当での起動（任意）
 
 `FUEL_ENV` を指定すると、PHPのエラー詳細を画面に表示しないモードで起動できる。
 
