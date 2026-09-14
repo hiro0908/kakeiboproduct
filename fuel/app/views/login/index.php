@@ -16,3 +16,4 @@
     </label>
     <button type="submit">ログイン</button>
 </form>
+<p><a href="<?=Uri::create("register")?>">新規登録はこちら</a></p>

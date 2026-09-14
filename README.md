@@ -27,11 +27,15 @@ composer install
 
 `fuel/core` や `fuel/packages/*` はリポジトリに含めていないため、clone 後は必ず実行する。
 
-### 2. データベースの作成
+### 2. データベースの作成（初回のみ）
+
+すでに `kakeibo` データベースを作成済みの場合はこの手順は不要。
+
+`sudo mysql`でmysqlに接続
 
 ```sql
-CREATE DATABASE kakeibo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'kakeibo'@'localhost' IDENTIFIED BY '任意のパスワード';
+CREATE DATABASE IF NOT EXISTS kakeibo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'kakeibo'@'localhost' IDENTIFIED BY '任意のパスワード';
 GRANT ALL PRIVILEGES ON kakeibo.* TO 'kakeibo'@'localhost';
 FLUSH PRIVILEGES;
 ```
@@ -157,12 +161,15 @@ erDiagram
 
 ## 画面一覧
 
+ログイン中は画面左のサイドバーから各画面に移動できる。トップページ（`/`）はホーム画面にリダイレクトされる。
+
 | 画面 | URL | 認証 | 機能 |
 | --- | --- | --- | --- |
 | ログイン | `/login` | 不要 | ログイン・ログアウト |
 | 新規登録 | `/register` | 不要 | アカウント作成、初期カテゴリ自動作成 |
-| ホーム | `/home` | 必要 | 今月の支出合計・上限比較・使用率・警告表示 |
-| 支出一覧 | `/expense` | 必要 | 一覧・新規登録・編集・削除（非同期）、月/カテゴリ絞り込み、ソート、件数切替、カテゴリ別集計 |
+| ホーム | `/home`（トップページ） | 必要 | 今月の支出合計・上限比較・使用率・警告表示、月ごとの支出推移（棒グラフ） |
+| 支出一覧 | `/expense` | 必要 | 一覧・削除（非同期）、月/カテゴリ絞り込み、ソート、件数切替、カテゴリ別集計 |
+| 支出の新規登録 | `/expense/new` | 必要 | 新規登録、金額クイックボタン |
 | カテゴリ管理 | `/category` | 必要 | 一覧・新規登録・編集・削除 |
 | 支出目標 | `/budget` | 必要 | 月ごとの上限設定・変更 |
 | 設定 | `/settings` | 必要 | テーマ切替、退会への導線 |
