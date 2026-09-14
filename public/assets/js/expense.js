@@ -67,6 +67,7 @@ function ExpenseViewModel(initialExpenses,categories,csrfTokenKey,csrfToken){
             }
             item.title(res.expense.title);
             item.amount(res.expense.amount);
+            item.category_id(res.expense.category_id);
             item.category_name(res.expense.category_name);
             item.expense_date(res.expense.expense_date);
             item.memo(res.expense.memo);
