@@ -1,3 +1,6 @@
+<?php if ($msg=\Session::get_flash("success")):?>
+    <p><small><?=$msg?></small></p>
+<?php endif;?>
 <h1>ログイン</h1>
 <?php if (!empty($errors)):?>
     <ul>
