@@ -1,4 +1,4 @@
-<h1>支出一覧</h1>
+<h1>支出一覧（<?=e($filter_year)?>年<?=e($filter_month)?>月）</h1>
 <p><a href="<?=\Uri::create("expense/new")?>">新規追加</a></p>
 <form method="get" action="<?=Uri::create("expense")?>">
     <label>
