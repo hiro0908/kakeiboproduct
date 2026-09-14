@@ -1,14 +1,12 @@
 <?php
 return array (
-  'version' => array(  
-    'app' => array(    
-      'default' => array(      
-        0 => '001_create_expense_tables',
-      ),
+  'version' => array(
+    'app' => array(
+      'default' => 0,
     ),
-    'module' => array(    
+    'module' => array(
     ),
-    'package' => array(    
+    'package' => array(
     ),
   ),
   'folder' => 'migrations/',
