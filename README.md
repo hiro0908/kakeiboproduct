@@ -36,9 +36,13 @@ composer install
 ```sql
 CREATE DATABASE IF NOT EXISTS kakeibo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'kakeibo'@'localhost' IDENTIFIED BY '任意のパスワード';
+CREATE USER IF NOT EXISTS 'kakeibo'@'127.0.0.1' IDENTIFIED BY '任意のパスワード';
 GRANT ALL PRIVILEGES ON kakeibo.* TO 'kakeibo'@'localhost';
+GRANT ALL PRIVILEGES ON kakeibo.* TO 'kakeibo'@'127.0.0.1';
 FLUSH PRIVILEGES;
 ```
+
+環境によっては、PHPの `pdo_mysql` が `localhost` をUnixソケットではなくTCP（`127.0.0.1`）経由で接続することがある。`mysql -u kakeibo -p` ではログインできるのにアプリからは `Access denied` になる場合は、`'kakeibo'@'127.0.0.1'` のユーザー・権限が無いことが原因のことが多いため、両方作成しておく。
 
 ### 3. 接続設定
 
