@@ -1,4 +1,4 @@
-<h1>カテゴリ管理</h1>
+<h1>カテゴリ設定</h1>
 <?php if ($msg=\Session::get_flash("error")):?>
     <p><?=$msg?></p>
 <?php endif;?>
@@ -11,6 +11,15 @@
     </ul>
 <?php endif;?>
 
+<h2>新しいカテゴリ</h2>
+<form method="post" action="<?=Uri::create("category")?>">        
+    <input type="hidden" name="<?=\Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
+    <label>カテゴリ名
+        <input type="text" name="name">
+    </label>
+    <button type="submit">追加</button>
+</form>
+<h2>カテゴリ一覧</h2>
 <ul>
     <?php foreach ($categories as $c):?>
         <li>
@@ -24,11 +33,4 @@
     <?php endforeach;?>
 </ul>
 
-<h2>新しいカテゴリ</h2>
-<form method="post" action="<?=Uri::create("category")?>">        
-    <input type="hidden" name="<?=\Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
-    <label>カテゴリ名
-        <input type="text" name="name">
-    </label>
-    <button type="submit">追加</button>
-</form>
+
