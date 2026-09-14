@@ -1,14 +1,11 @@
 <?php
 class Controller_Login extends Controller_Base{
     protected $require_login=false;
-    public function action_index(){
-        if (\Input::method()==="POST"){
-            return $this->handle_submit();
-        }
+    public function get_index(){
         $this->template->title="ログイン";
         $this->template->content=\View::forge("login/index");
     }
-    protected function handle_submit(){
+    public function post_index(){
         $val=\Validation::forge();
         $val->add_field("username","ユーザー名","required");
         $val->add_field("password","パスワード","required");

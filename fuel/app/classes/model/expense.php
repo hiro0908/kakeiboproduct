@@ -70,10 +70,16 @@ class Model_Expense{
             ->execute();
     }
 
-    public static function delete($id,$user_id){
+    public static function delete($id, $user_id){
         return \DB::delete("expense")
         ->where("id","=",$id)
         ->where("user_id","=",$user_id)
+        ->execute();
+    }
+
+    public static function delete_by_user($user_id){
+        return \DB::delete("expense")
+        ->where ("user_id","=",$user_id)
         ->execute();
     }
 
