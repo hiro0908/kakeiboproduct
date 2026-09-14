@@ -2,7 +2,7 @@
 <?php if(!empty($errors)):?>
     <ul>
         <?php foreach ($errors as $e):?>
-            <li><?=$e?></li>
+            <li><?=e($e)?></li>
         <?php endforeach;?>
     </ul>
 <?php endif;?>
@@ -11,7 +11,7 @@
     <form method="post" action="<?=\Uri::create("expense/new")?>">
         <input type="hidden" name="<?=\Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
         <label>タイトル
-            <input type="text" name="title" value="<?=\Input::post("title")?>">
+            <input type="text" name="title" value="<?=e(\Input::post("title"))?>">
         </label>
         <br><br>
         <label>金額
@@ -28,7 +28,7 @@
         <label>カテゴリ
             <select name="category_id">
                 <?php foreach ($categories as $c):?>
-                    <option value="<?=$c["id"]?>"><?=$c["name"]?></option>
+                    <option value="<?=$c["id"]?>"><?=e($c["name"])?></option>
                 <?php endforeach;?>
             </select>
         </label>
@@ -38,7 +38,7 @@
         </label>
         <br><br>
         <label>メモ
-            <textarea name="memo"><?=\Input::post("memo")?></textarea>
+            <textarea name="memo"><?=e(\Input::post("memo"))?></textarea>
         </label>
         <button type="submit">登録</button>
     </form>

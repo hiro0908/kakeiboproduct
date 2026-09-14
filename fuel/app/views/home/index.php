@@ -1,4 +1,4 @@
-<p>ようこそ、<?=$current_user["username"]?>さん</p>
+<p>ようこそ、<?=e($current_user["username"])?>さん</p>
 <h2>今月の支出</h2>
 <p>支出の合計:<?=number_format($summary["total"])?>円</p>
 <?php if($summary["limit"]!==null):?>
@@ -23,7 +23,7 @@
         <div class="bar-item">
             <div class="bar" style="height:<?= $height ?>px;" title="<?= number_format($m["total"]) ?>円"></div>
             <span class="bar-value"><?= number_format($m["total"]) ?></span>
-            <span class="bar-label"><?= $m["label"] ?></span>
+            <span class="bar-label"><?= e($m["label"]) ?></span>
         </div>
     <?php endforeach; ?>
 </div>

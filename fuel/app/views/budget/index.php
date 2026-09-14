@@ -2,7 +2,7 @@
 <?php if(!empty($errors)):?>
     <ul>
         <?php foreach($errors as $e):?>
-            <li><?=$e?></li>
+            <li><?=e($e)?></li>
         <?php endforeach;?>
     </ul>
 <?php endif;?>

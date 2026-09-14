@@ -14,4 +14,10 @@ abstract class Controller_Base extends Controller_Template{
         $this->template->current_user=$this->current_user;
         \View::set_global("current_user",$this->current_user);
     }
+
+    public function after($response){
+        $response=parent::after($response);
+        $response->set_header("X-Frame-Options","SAMEORIGIN");
+        return $response;
+    }
 }
