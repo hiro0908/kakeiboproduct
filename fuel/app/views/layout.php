@@ -29,17 +29,83 @@
             main{
                 padding:1rem;
             }
+            .app-shell{
+                display:flex;
+                min-height:100vh;
+            }
+            .sidebar{
+                width:200px;
+                flex-shrink:0;
+                border-right:1px solid var(--border);
+                padding:1rem;
+            }
+            .sidebar .app-name{
+                font-weight:bold;
+                margin-bottom:1rem;
+            }
+            .sidebar nav{
+                display:flex;
+                flex-direction:column;
+                gap:0.5rem;
+            }
+            .sidebar nav a{
+                color:var(--text);
+                text-decoration:none;
+                padding:0.5rem;
+                border-radius:4px;
+            }
+            .sidebar nav a:hover{
+                background:var(--border);
+            }
+            .main-column{
+                flex:1;
+                min-width:0;
+            }
+            table{
+                width:100%;
+                border-collapse:collapse;
+                table-layout:fixed;
+            }
+            th, td{
+                border:1px solid var(--border);
+                padding:0.5rem;
+                text-align:left;
+                overflow:hidden;
+                text-overflow:ellipsis;
+                white-space:nowrap;
+            }
+            th:last-child, td:last-child{
+                width:140px;
+                white-space:normal;
+            }
+            td input, td select{
+                width:100%;
+                box-sizing:border-box;
+            }
+
+
         </style>
     </head>
     <body>
-        <header>
-            家計簿アプリ
+        <div class="app-shell">
             <?php if ($current_user): ?>
-                ようこそ、<?=$current_user["username"]?>さん
+                <aside class="sidebar">
+                    <div class="app-name">家計簿アプリ</div>
+                    <nav>
+                        <a href="<?=\Uri::create("home")?>">ホーム</a>
+                        <a href="<?=\Uri::create("expense")?>">支出一覧</a>
+                        <a href="<?=\Uri::create("category")?>">カテゴリ管理</a>
+                        <a href="<?=\Uri::create("budget")?>">支出目標</a>
+                        <a href="<?=\Uri::create("settings")?>">設定</a>
+                    </nav>
+                </aside>
             <?php endif; ?>
-        </header>
-        <main>
-            <?=$content ??""?>
-        </main>
+            <div class="main-column">
+                <main>
+                    <?=$content ??""?>
+                </main>
+            </div>
+        </div>
     </body>
+
 </html>
