@@ -105,4 +105,20 @@ class Model_Expense{
             ->execute()
             ->as_array();
     }
+
+    public static function monthly_totals($user_id,$months=6){
+        $result=array();
+        $now=new \Datetime();
+        for($i=$months-1;$i>=0;$i--){
+            $date=clone $now;
+            $date->modify("-{$i} months");
+            $year=(int) $date->format("Y");
+            $month=(int) $date->format("n");
+            $result[]=array(
+                "label"=>$date->format("Y/m"),
+                "total"=>static::total_by_month($user_id,$year,$month),
+            );
+        }
+        return $result;
+    }
 }

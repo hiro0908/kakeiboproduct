@@ -82,6 +82,32 @@
                 width:100%;
                 box-sizing:border-box;
             }
+            .bar-chart{
+                display:flex;
+                align-items:flex-end;
+                gap:1rem;
+                height:200px;
+                padding:1rem 0;
+            }
+            .bar-item{
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                gap:0.25rem;
+            }
+            .bar{
+                width:32px;
+                background:var(--accent);
+                border-radius:4px 4px 0 0;
+            }
+            .bar-value{
+                font-size:0.75rem;
+            }
+            .bar-label{
+                font-size:0.75rem;
+                color:var(--text);
+            }
+
 
 
         </style>
