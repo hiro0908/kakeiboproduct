@@ -2,7 +2,9 @@
 /**
  * 開発環境のデータベース接続設定のひな形。
  *
- * このファイルを db.php にコピーし、username / password を自分の環境の値に変える。
+ * このファイルを db.php にコピーする。README の手順通りにセットアップしていれば
+ * この値のままで動く。パスワードを変えた場合は、README の CREATE USER / ALTER USER
+ * のSQLも同じ値に揃えること。
  * db.php 本体は接続情報を含むためコミットしない。
  */
 
@@ -12,7 +14,7 @@ return array(
 		'connection' => array(
 			'dsn'      => 'mysql:host=localhost;dbname=kakeibo;charset=utf8mb4',
 			'username' => 'kakeibo',
-			'password' => '',
+			'password' => '12345678',
 		),
 		'charset'   => 'utf8mb4',
 		'profiling' => true,

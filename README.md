@@ -35,14 +35,24 @@ composer install
 
 ```sql
 CREATE DATABASE IF NOT EXISTS kakeibo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'kakeibo'@'localhost' IDENTIFIED BY '任意のパスワード';
-CREATE USER IF NOT EXISTS 'kakeibo'@'127.0.0.1' IDENTIFIED BY '任意のパスワード';
+CREATE USER IF NOT EXISTS 'kakeibo'@'localhost' IDENTIFIED BY '12345678';
+CREATE USER IF NOT EXISTS 'kakeibo'@'127.0.0.1' IDENTIFIED BY '12345678';
 GRANT ALL PRIVILEGES ON kakeibo.* TO 'kakeibo'@'localhost';
 GRANT ALL PRIVILEGES ON kakeibo.* TO 'kakeibo'@'127.0.0.1';
 FLUSH PRIVILEGES;
 ```
 
+パスワードは `db.php.example` と同じ `12345678` に固定している（開発用ローカルDBのみで使う値のため）。変えたい場合は、このSQLと `fuel/app/config/development/db.php` の両方を同じ値に揃えること。
+
 環境によっては、PHPの `pdo_mysql` が `localhost` をUnixソケットではなくTCP（`127.0.0.1`）経由で接続することがある。`mysql -u kakeibo -p` ではログインできるのにアプリからは `Access denied` になる場合は、`'kakeibo'@'127.0.0.1'` のユーザー・権限が無いことが原因のことが多いため、両方作成しておく。
+
+**`Access denied` が出た場合の注意点：** `CREATE USER IF NOT EXISTS` は、そのユーザーが既に別のパスワードで存在していると**何もせずスキップする**（パスワードは更新されない）。以前に一度でもこのSQLを別のパスワードで実行したことがある場合、`db.php` の値と実際のMySQL側のパスワードがズレて `Access denied` になる。その場合は以下でパスワードを強制的に上書きする。
+
+```sql
+ALTER USER 'kakeibo'@'localhost' IDENTIFIED BY '12345678';
+ALTER USER 'kakeibo'@'127.0.0.1' IDENTIFIED BY '12345678';
+FLUSH PRIVILEGES;
+```
 
 ### 3. 接続設定
 
