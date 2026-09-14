@@ -46,6 +46,9 @@
             <th>メモ</th>
             <th></th>
         </tr>
+        <tr data-bind="visible:expenses().length===0">
+            <td colspan="6">データがありません</td>
+        </tr>
         <!-- ko foreach:expenses-->
         <tr data-bind="visible:!isEditing()">
             <td data-bind="text:expense_date"></td>
