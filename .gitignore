@@ -37,3 +37,4 @@ desktop.ini
 
 # npm の install 先（package.json から再現できるため追跡しない）
 /node_modules
+/test

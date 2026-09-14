@@ -12,4 +12,5 @@
 </form>
 
 <h2>アカウント</h2>
+<p><a href="<?=Uri::create("logout")?>">ログアウト</a></p>
 <p><a href="<?=Uri::create("account")?>">アカウントを削除する</a></p>

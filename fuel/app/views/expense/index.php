@@ -9,16 +9,16 @@
         </select>
     </label>
     <label>
-        <input type="number" name="year" value="<?=$filter_year ?>">
+        <input type="number" name="year" value="<?=e($filter_year) ?>">
     </label>
     <label>
-        <input type="number" name="month" value="<?=$filter_month?>">
+        <input type="number" name="month" value="<?=e($filter_month)?>">
     </label>
     <label>
         <select name="category_id">
             <option value="">すべて</option>
             <?php foreach($categories as $c):?>
-                <option value="<?=$c["id"]?>"<?=$c["id"]==$filter_category_id?"selected":""?>><?=$c["name"]?></option>
+                <option value="<?=$c["id"]?>"<?=$c["id"]==$filter_category_id?"selected":""?>><?=e($c["name"])?></option>
             <?php endforeach;?>
         </select>
     </label>
@@ -26,7 +26,7 @@
 </form>
 <ul>
     <?php foreach($category_totals as $ct):?>
-        <li><?=$ct["name"]?>:<?=number_format($ct["total"])?>円</li>
+        <li><?=e($ct["name"])?>:<?=number_format($ct["total"])?>円</li>
     <?php endforeach;?>
 </ul>
 <p>
@@ -45,6 +45,9 @@
             <th>金額</th>
             <th>メモ</th>
             <th></th>
+        </tr>
+        <tr data-bind="visible:expenses().length===0">
+            <td colspan="6">データがありません</td>
         </tr>
         <!-- ko foreach:expenses-->
         <tr data-bind="visible:!isEditing()">
@@ -76,7 +79,7 @@
 <script src="/assets/js/expense.js"></script>
 <script>
     var vm=new ExpenseViewModel(
-        <?=json_encode($expenses)?>,
+        <?=json_encode($expenses,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP)?>,
         <?=json_encode(\Config::get("security.csrf_token_key"))?>,
         <?=json_encode(\Security::fetch_token())?>
     );

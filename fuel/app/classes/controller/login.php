@@ -37,6 +37,7 @@ class Controller_Login extends Controller_Base{
     }
     public function action_logout(){
         \Service\Auth::logout();
+        \Session::set_flash("success","正常にログアウトしました");
         \Response::redirect("login");
     }
 }
