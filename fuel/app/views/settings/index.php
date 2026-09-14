@@ -3,10 +3,10 @@
 <form method="post" action="<?=Uri::create("settings")?>">
     <input type="hidden" name="<?=\Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
     <label>
-        <input type="radio" name="theme" value="light" <?=$theme==="light"?"checked":""?>>ライト
+        <input type="radio" name="theme" value="light" <?=$theme === "light" ? "checked" : ""?>>ライト
     </label>
     <label>
-        <input type="radio" name="theme" value = "dark" <?=$theme==="dark"?"checked":""?>>ダーク
+        <input type="radio" name="theme" value="dark" <?=$theme === "dark" ? "checked" : ""?>>ダーク
     </label>
     <button type="submit">保存</button>
 </form>

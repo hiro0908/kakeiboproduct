@@ -46,10 +46,10 @@
 <script src="/assets/js/vendor/knockout-3.5.3.js"></script>
 <script>
     function NewExpenseViewModel(initialAmount){
-        var self =this;
+        const self =this;
         self.amount=ko.observable(initialAmount||"");
         self.addQuickAmount=function(value){
-            var current=Number(self.amount())||0;
+            const current=Number(self.amount())||0;
             self.amount(current+value);
         }
     }
