@@ -1,7 +1,8 @@
-function ExpenseViewModel(initialExpenses,csrfTokenKey,csrfToken){
+function ExpenseViewModel(initialExpenses,categories,csrfTokenKey,csrfToken){
     const self=this;
     self.csrfTokenKey = csrfTokenKey;
     self.csrfToken    = csrfToken;
+    self.categories   = categories;
 
     function wrap(e){
         return {
@@ -27,7 +28,8 @@ function ExpenseViewModel(initialExpenses,csrfTokenKey,csrfToken){
     function postForm(url,data){
         const params = new URLSearchParams();
         for (let key in data){
-            params.append(key,data[key])
+            const value = data[key];
+            params.append(key, value === null|| value === undefined ? "" : value);
         };
         params.append(self.csrfTokenKey,self.csrfToken);
 
@@ -65,6 +67,7 @@ function ExpenseViewModel(initialExpenses,csrfTokenKey,csrfToken){
             }
             item.title(res.expense.title);
             item.amount(res.expense.amount);
+            item.category_id(res.expense.category_id);
             item.category_name(res.expense.category_name);
             item.expense_date(res.expense.expense_date);
             item.memo(res.expense.memo);

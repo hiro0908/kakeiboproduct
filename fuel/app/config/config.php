@@ -142,7 +142,8 @@ return array(
 	 *  The default language.
 	 */
 
-	// 'language' => 'en',
+	// バリデーションエラー等のメッセージを日本語化するため、fuel/app/lang/ja/ を優先して読み込む
+	'language' => 'ja',
 
 	/**
 	 *  Fallback language when file isn't available for default language.
@@ -360,7 +361,10 @@ return array(
 		 * ---------------------------------------------------------------------
 		 */
 
-		'http_only' => true,
+		// CSRFトークンのCookie（Security::check_token()経由）もこの設定を継承するため、
+		// ここをtrueにするとJSからCSRFトークンを読めなくなりAJAX保存等が壊れる。
+		// セッションCookie自体のHttpOnly化は fuel/app/config/session.php の cookie_http_only で個別に行う。
+		'http_only' => false,
 	),
 
 	/**

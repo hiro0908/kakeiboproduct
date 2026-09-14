@@ -64,7 +64,9 @@
         <tr data-bind = "visible:isEditing">
             <td><input type = "date" data-bind="value:expense_date"></td>
             <td><input type = "text" data-bind="value:title"></td>
-            <td><input type = "number" data-bind="value:category_id"></td>
+            <td>
+                <select data-bind="options:$root.categories, optionsText:'name', optionsValue:'id', value:category_id"></select>
+            </td>
             <td><input type = "number" data-bind="value:amount"></td>
             <td><input type = "text" data-bind="value:memo"></td>
             <td>
@@ -80,6 +82,7 @@
 <script>
     const vm = new ExpenseViewModel(
         <?= json_encode($expenses,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP)?>,
+        <?= json_encode($categories,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP)?>,
         <?= json_encode(\Config::get("security.csrf_token_key"))?>,
         <?= json_encode(\Security::fetch_token())?>
     );
