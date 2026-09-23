@@ -38,16 +38,6 @@ return array(
 		return Response::forge(View::forge("500"),500);
 	},
 
-	/**
-	 * -------------------------------------------------------------------------
-	 *  Example for Presenter
-	 * -------------------------------------------------------------------------
-	 *
-	 *  A route for showing page using Presenter
-	 *
-	 */
-
-	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
 	'home'     => 'home/index',
 	"register" => "register/index",
 	"login"    => "login/index",
