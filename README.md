@@ -107,6 +107,8 @@ oil                CLI ツール（マイグレーション等）
 | `fuel/app/config/config.php` | ロケール（ja_JP）、タイムゾーン（Asia/Tokyo） | する |
 | `fuel/app/config/development/db.php` | DB 接続情報 | **しない** |
 | `fuel/app/config/development/db.php.example` | 接続情報のひな形 | する |
+| `fuel/app/config/production/db.php` | 本番用 DB 接続情報 | **しない** |
+| `fuel/app/config/production/db.php.example` | 本番用接続情報のひな形 | する |
 | `fuel/app/config/crypt.php` | 初回起動時に自動生成される暗号化キー | **しない** |
 
 ### アプリ独自の設定（kakeibo.php）
