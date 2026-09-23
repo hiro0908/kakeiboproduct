@@ -1,0 +1,17 @@
+<?php
+/**
+ * 本番環境のデータベース接続設定のひな形。
+ *
+ * このファイルを db.php にコピーし、dsn / username / password を実際の値に変える。
+ * db.php 本体は接続情報を含むためコミットしない。
+ */
+
+return array(
+	'default' => array(
+		'connection' => array(
+			'dsn'      => 'mysql:host=localhost;dbname=kakeibo;charset=utf8mb4',
+			'username' => '',
+			'password' => '',
+		),
+	),
+);
