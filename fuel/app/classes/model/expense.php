@@ -25,7 +25,7 @@ class Model_Expense{
         $sort_by  = !empty($filters["sort_by"])?$filters["sort_by"]:"expense_date";
         $sort_dir = !empty($filters["sort_dir"])?$filters["sort_dir"]:"desc";
 
-        return $query->order_by("expense." . $sort_by,$sort_dir)
+        return $query -> order_by("expense." . $sort_by,$sort_dir)
             -> execute()
             -> as_array();
     }
@@ -33,14 +33,14 @@ class Model_Expense{
     public static function find($id,$user_id){
         return \DB::select("id","user_id","category_id","title","amount","expense_date","memo")
         -> from("expense")
-        -> where("id","=",$id)
-        -> where("user_id","=",$user_id)
+        -> where("id", "=", $id)
+        -> where("user_id", "=", $user_id)
         -> execute()
-        -> current()?:null;
+        -> current() ? : null;
     }
 
     public static function create($user_id, $category_id, $title, $amount, $expense_date, $memo){
-        list($id,)=\DB::insert("expense")
+        list($id,) = \DB::insert("expense")
             -> set(array(
                 "user_id"      => $user_id,
                 "category_id"  => $category_id,
@@ -72,21 +72,21 @@ class Model_Expense{
 
     public static function delete($id, $user_id){
         return \DB::delete("expense")
-        -> where("id","=",$id)
-        -> where("user_id","=",$user_id)
+        -> where("id", "=", $id)
+        -> where("user_id", "=", $user_id)
         -> execute();
     }
 
     public static function delete_by_user($user_id){
         return \DB::delete("expense")
-        -> where ("user_id","=",$user_id)
+        -> where ("user_id", "=", $user_id)
         -> execute();
     }
 
-    public static function total_by_month($user_id,$year,$month){
-        $start  = sprintf("%04d-%02d-01",$year,$month);
+    public static function total_by_month($user_id, $year, $month){
+        $start  = sprintf("%04d-%02d-01", $year,$month);
         $end    = date("Y-m-t",strtotime($start));
-        $result = \DB::select(array(\DB::expr("SUM(amount)"),"total"))
+        $result = \DB::select(array(\DB::expr("SUM(amount)"), "total"))
             -> from("expense")
             -> where("user_id", "=", $user_id)
             -> where("expense_date", ">=", $start)
@@ -97,16 +97,16 @@ class Model_Expense{
     }
 
     public static function total_by_category($user_id, $year, $month){
-        $start = sprintf("%04d-%02d-01", $year,$month);
+        $start = sprintf("%04d-%02d-01", $year, $month);
         $end   = date("Y-m-t", strtotime($start));
 
-        return \DB::select("category.name",array(\DB::expr("SUM(expense.amount)"), "total"))
+        return \DB::select("category.name", array(\DB::expr("SUM(expense.amount)"), "total"))
             -> from("expense")
             -> join("category")
-            -> on("category.id","=","expense.category_id")
-            -> where("expense.user_id","=",$user_id)
-            -> where("expense.expense_date",">=",$start)
-            -> where("expense.expense_date","<=",$end)
+            -> on("category.id", "=", "expense.category_id")
+            -> where("expense.user_id", "=", $user_id)
+            -> where("expense.expense_date" ,">=", $start)
+            -> where("expense.expense_date", "<=", $end)
             -> group_by("category.id")
             -> execute()
             -> as_array();
