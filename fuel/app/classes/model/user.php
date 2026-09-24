@@ -17,7 +17,7 @@ class Model_User{
         list($id,) = \DB::insert("user")
         -> set(array(
             "username"   => $username,
-            "password"   => password_hash("$password",PASSWORD_DEFAULT),
+            "password"   => password_hash("$password", PASSWORD_DEFAULT),
             "created_at" => \Date::forge() -> format("mysql"),
             "updated_at" => \Date::forge() -> format("mysql")
         ))

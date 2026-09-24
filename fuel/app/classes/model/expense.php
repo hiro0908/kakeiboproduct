@@ -84,7 +84,7 @@ class Model_Expense{
     }
 
     public static function total_by_month($user_id, $year, $month){
-        $start  = sprintf("%04d-%02d-01", $year,$month);
+        $start  = sprintf("%04d-%02d-01", $year, $month);
         $end    = date("Y-m-t",strtotime($start));
         $result = \DB::select(array(\DB::expr("SUM(amount)"), "total"))
             -> from("expense")
@@ -112,7 +112,7 @@ class Model_Expense{
             -> as_array();
     }
 
-    public static function monthly_totals($user_id,$months=6){
+    public static function monthly_totals($user_id, $months = 6){
         $result = array();
         $now    = new \Datetime();
         for($i = $months-1; $i >= 0; $i--){
