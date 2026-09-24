@@ -6,18 +6,18 @@
     <p>使用率:<?= $summary["percentage"]?>%</p>
 
     <?php if($summary["is_over"]):?>
-        <p style="color:red;">上限を超えています</p>
+        <p style = "color:red;">上限を超えています</p>
     <?php elseif($summary["is_warning"]):?>
-        <p style="color:orange;">支出上限に近づいています</p>
+        <p style = "color:orange;">支出上限に近づいています</p>
     <?php endif;?>
 <?php else:?>
     <p>今月の支出上限がまだ設定されていません</p>
 <?php endif;?>
 <h2>月ごとの利用状況</h2>
-<div class="bar-chart">
+<div class = "bar-chart">
     <?php foreach ($monthly_totals as $m):?>
-        <div class="bar-item">
-            <div  class = "bar" style = "height:<?= $m["height"] ?>px;" title="<?= number_format($m["total"]) ?>円"></div>
+        <div class = "bar-item">
+            <div  class = "bar" style = "height:<?= $m["height"] ?>px;" title = "<?= number_format($m["total"]) ?>円"></div>
             <span class = "bar-value"><?= number_format($m["total"]) ?></span>
             <span class = "bar-label"><?= e($m["label"]) ?></span>
         </div>

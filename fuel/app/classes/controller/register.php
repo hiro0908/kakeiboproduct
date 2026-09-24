@@ -36,7 +36,7 @@ class Controller_Register extends Controller_Base{
         $id = \Model_User::create($username, \Input::post("password"));
 
         foreach (\Config::get("kakeibo.default_category", array()) as $name){
-            \Model_Category::create($id,$name);
+            \Model_Category::create($id, $name);
         }
         \Service\Auth::login(array("id" => $id, "username" => $username));
         \Response::redirect("home");
