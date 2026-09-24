@@ -8,12 +8,11 @@ class Model_User{
         -> current() ? : null;
     }
 
-    //既に使用された名前の場合の処理
     public static function username_exists($username){
         return static::find_by_username($username) !== null;
     }
 
-    public static function create($username,$password){
+    public static function create($username, $password){
         list($id,) = \DB::insert("user")
         -> set(array(
             "username"   => $username,
