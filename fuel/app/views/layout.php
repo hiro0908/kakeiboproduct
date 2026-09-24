@@ -113,20 +113,20 @@
         </style>
     </head>
     <body>
-        <div class="app-shell">
+        <div class = "app-shell">
             <?php if ($current_user): ?>
-                <aside class="sidebar">
-                    <div class="app-name">家計簿アプリ</div>
+                <aside class = "sidebar">
+                    <div class = "app-name">家計簿アプリ</div>
                     <nav>
-                        <a href="<?=\Uri::create("home")?>">ホーム</a>
-                        <a href="<?=\Uri::create("expense")?>">支出一覧</a>
-                        <a href="<?=\Uri::create("category")?>">カテゴリ管理</a>
-                        <a href="<?=\Uri::create("budget")?>">支出目標</a>
-                        <a href="<?=\Uri::create("settings")?>">設定</a>
+                        <a href = "<?=\Uri::create("home")?>">ホーム</a>
+                        <a href = "<?=\Uri::create("expense")?>">支出一覧</a>
+                        <a href = "<?=\Uri::create("category")?>">カテゴリ管理</a>
+                        <a href = "<?=\Uri::create("budget")?>">支出目標</a>
+                        <a href = "<?=\Uri::create("settings")?>">設定</a>
                     </nav>
                 </aside>
             <?php endif; ?>
-            <div class="main-column">
+            <div class = "main-column">
                 <main>
                     <?=$content ??""?>
                 </main>

@@ -7,10 +7,10 @@
     </ul>
 <?php endif;?>
 
-<form method = "post" action="<?=\Uri::create("category/{$category["id"]}/edit")?>">
-    <input type="hidden" name="<?=Config::get("security.csrf_token_key")?>" value="<?=\Security::fetch_token()?>">
+<form method = "post" action = "<?=\Uri::create("category/{$category["id"]}/edit")?>">
+    <input type = "hidden" name = "<?=Config::get("security.csrf_token_key")?>" value = "<?=\Security::fetch_token()?>">
     <label> カテゴリ名
-        <input type="text" name="name" value="<?=e($category["name"])?>">
+        <input type = "text" name = "name" value = "<?=e($category["name"])?>">
     </label>
-    <button type="submit">更新</button>
+    <button type = "submit">更新</button>
 </form>
